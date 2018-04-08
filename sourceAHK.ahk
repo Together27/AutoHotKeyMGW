@@ -6,54 +6,7 @@
 #UseHook On
 SendMode Input
 
-buildscr = 36
-downlurl := "https://github.com/Together27/AutoHotKeyMGW/blob/master/updt.exe?raw=true"
-downllen := "https://github.com/Together27/AutoHotKeyMGW/raw/master/verlen.ini"
-WM_HELP(){
-    IniRead, vupd, %a_temp%/verlen.ini, UPD, v
-    IniRead, desupd, %a_temp%/verlen.ini, UPD, des
-    desupd := Utf8ToAnsi(desupd)
-    IniRead, updupd, %a_temp%/verlen.ini, UPD, upd
-    updupd := Utf8ToAnsi(updupd)
-    msgbox, , Список изменений версии %vupd%, %updupd%
-    return
-}
-OnMessage(0x53, "WM_HELP")
-Gui +OwnDialogs
-SplashTextOn, , 50,Автообновление, Наберитесь терпения...`nИдёт проверка обновлений.
-URLDownloadToFile, %downllen%, %a_temp%/verlen.ini
-IniRead, buildupd, %a_temp%/verlen.ini, UPD, build
-if buildupd =
-{
-    SplashTextOn, , 50,Автообновление, Наберитесь терпения...`nОшибка. Нет связи с сервером.
-    sleep, 2000
-}
-if buildupd > % buildscr
-{
-    IniRead, vupd, %a_temp%/verlen.ini, UPD, v
-    SplashTextOn, , 60,Автообновление, Наберитесь терпения...`nОбнаружено обновление до версии %vupd%!
-    sleep, 2000
-    IniRead, desupd, %a_temp%/verlen.ini, UPD, des
-    desupd := Utf8ToAnsi(desupd)
-    IniRead, updupd, %a_temp%/verlen.ini, UPD, upd
-    updupd := Utf8ToAnsi(updupd)
-    SplashTextoff
-    msgbox, 16384, Обновление скрипта до версии %vupd%, %desupd%
-    IfMsgBox OK
-    {
-        msgbox, 1, Обновление скрипта до версии %vupd%, Хотите ли Вы обновиться?
-        IfMsgBox OK
-        {
-            put2 := % A_ScriptFullPath
-            RegWrite, REG_SZ, HKEY_CURRENT_USER, Software\SAMP ,put2 , % put2
-            SplashTextOn, , 60,Автообновление, Наберитесь терпения...`nОбновляем скрипт до версии %vupd%!
-            URLDownloadToFile, %downlurl%, %a_temp%/updt.exe
-            sleep, 1000
-            run, %a_temp%/updt.exe
-            exitapp
-        }
-    }
-}
+
 SplashTextoff
 DIR = %A_MyDocuments%\GTA San Andreas User Files\AutoHotKey MGW\Settings
 FileCreateDir, %DIR%
